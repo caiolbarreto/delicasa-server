@@ -12,28 +12,19 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import * as bcrypt from 'bcrypt';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    const user = await this.usersService.findByEmail(createUserDto.email);
+    const user = await this.usersService.findByCpf(createUserDto.cpf);
 
     if (user) {
-      throw new HttpException('Email already taken', HttpStatus.BAD_REQUEST);
+      throw new HttpException('CPF already taken', HttpStatus.BAD_REQUEST);
     }
 
-    const salt = await bcrypt.genSalt();
-
-    const { password } = createUserDto;
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    return await this.usersService.create({
-      ...createUserDto,
-      password: hashedPassword,
-    });
+    return await this.usersService.create(createUserDto);
   }
 
   @Get()
@@ -56,9 +47,7 @@ export class UsersController {
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     await this.findOne(id);
 
-    const { name, password } = updateUserDto;
-
-    return await this.usersService.update(id, { name, password });
+    return await this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')

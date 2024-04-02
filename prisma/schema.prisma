@@ -14,7 +14,7 @@ datasource db {
 model User {
   id        String  @id @default(uuid())
   name      String
-  cpf       String
+  cpf       String  @unique
   cellphone String
   Order     Order[]
 
@@ -43,6 +43,8 @@ model Order {
   userId String      @map("user_id")
 
   user User @relation(fields: [userId], references: [id])
+
+  @@map("orders")
 }
 
 model OrderItem {
@@ -52,4 +54,6 @@ model OrderItem {
 
   order Order @relation(fields: [orderId], references: [id])
   item  Item  @relation(fields: [itemId], references: [id])
+
+  @@map("order_items")
 }
