@@ -3,12 +3,12 @@ version: "3"
 services:
   server:
     build: .
-    command: yarn dev
+    command: npm run dev
     env_file: .env
     environment:
       DATABASE_URL: "postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@db:5432/${DATABASE_USER}?schema=public"
     ports:
-      - "3000:3000"
+      - "3333:3333"
     volumes:
       - .:/app
     restart: unless-stopped

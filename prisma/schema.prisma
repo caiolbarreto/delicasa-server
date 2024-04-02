@@ -12,8 +12,44 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  name     String
-  password String
+  id        String  @id @default(uuid())
+  name      String
+  cpf       String
+  cellphone String
+  Order     Order[]
+
+  @@map("users")
+}
+
+model Item {
+  id        String      @id @default(uuid())
+  name      String
+  price     Int
+  quantity  Int
+  OrderItem OrderItem[]
+
+  @@map("items")
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+}
+
+model Order {
+  id     String      @id @default(uuid())
+  status OrderStatus @default(PENDING)
+  items  OrderItem[]
+  userId String      @map("user_id")
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model OrderItem {
+  id      String @id @default(uuid())
+  orderId String @map("order_id")
+  itemId  String @map("item_id")
+
+  order Order @relation(fields: [orderId], references: [id])
+  item  Item  @relation(fields: [itemId], references: [id])
 }

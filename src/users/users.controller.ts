@@ -8,14 +8,11 @@ import {
   Delete,
   HttpStatus,
   HttpException,
-  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -39,13 +36,11 @@ export class UsersController {
     });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     return await this.usersService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(id);
@@ -57,7 +52,6 @@ export class UsersController {
     return user;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     await this.findOne(id);
@@ -67,7 +61,6 @@ export class UsersController {
     return await this.usersService.update(id, { name, password });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     await this.findOne(id);
