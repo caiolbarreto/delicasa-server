@@ -8,6 +8,7 @@ import {
   Delete,
   HttpStatus,
   HttpException,
+  HttpCode,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,6 +18,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @HttpCode(201)
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.findByCpf(createUserDto.cpf);
 
@@ -44,6 +46,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @HttpCode(203)
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     await this.findOne(id);
 
@@ -51,6 +54,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @HttpCode(203)
   async remove(@Param('id') id: string) {
     await this.findOne(id);
 

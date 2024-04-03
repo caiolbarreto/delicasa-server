@@ -39,6 +39,17 @@ export class OrdersService {
     return await this.prisma.order.findUnique({ where: { id } });
   }
 
+  async update(id: string, status: string) {
+    return await this.prisma.order.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
+  }
+
   async remove(id: string) {
     await this.prisma.orderItem.deleteMany({
       where: {

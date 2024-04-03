@@ -11,4 +11,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsOptional()
   cellphone: string;
+
+  @IsOptional()
+  isAdmin: boolean;
 }

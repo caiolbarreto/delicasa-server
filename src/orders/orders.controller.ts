@@ -8,9 +8,11 @@ import {
   HttpStatus,
   HttpException,
   HttpCode,
+  Put,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
@@ -21,8 +23,6 @@ export class OrdersController {
     @Param('id') userId: string,
     @Body() createOrderDto: CreateOrderDto,
   ) {
-    console.log('user', userId, createOrderDto);
-
     return await this.ordersService.create(userId, createOrderDto);
   }
 
@@ -40,6 +40,15 @@ export class OrdersController {
     }
 
     return order;
+  }
+
+  @Put(':id')
+  @HttpCode(203)
+  async updateOrderStatus(
+    @Param('id') id: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    await this.ordersService.update(id, updateOrderDto.status);
   }
 
   @Delete(':id')
