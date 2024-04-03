@@ -25,7 +25,6 @@ model Item {
   id        String      @id @default(uuid())
   name      String
   price     Int
-  quantity  Int
   OrderItem OrderItem[]
 
   @@map("items")
@@ -39,8 +38,9 @@ enum OrderStatus {
 model Order {
   id     String      @id @default(uuid())
   status OrderStatus @default(PENDING)
-  items  OrderItem[]
   userId String      @map("user_id")
+
+  items OrderItem[]
 
   user User @relation(fields: [userId], references: [id])
 
@@ -48,9 +48,10 @@ model Order {
 }
 
 model OrderItem {
-  id      String @id @default(uuid())
-  orderId String @map("order_id")
-  itemId  String @map("item_id")
+  id       String @id @default(uuid())
+  orderId  String @map("order_id")
+  itemId   String @map("item_id")
+  quantity Int
 
   order Order @relation(fields: [orderId], references: [id])
   item  Item  @relation(fields: [itemId], references: [id])
