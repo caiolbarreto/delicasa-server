@@ -32,9 +32,10 @@ model Item {
 }
 
 model Order {
-  id     String @id @default(uuid())
-  status String @default("pending")
-  userId String @map("user_id")
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  status    String   @default("pending")
+  createdAt DateTime @default(now()) @map("created_at")
 
   items OrderItem[]
 

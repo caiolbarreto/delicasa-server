@@ -13,6 +13,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -59,5 +60,17 @@ export class UsersController {
     await this.findOne(id);
 
     await this.usersService.remove(id);
+  }
+
+  @Post('/login')
+  @HttpCode(200)
+  async login(@Body() loginUser: LoginUserDto) {
+    const user = await this.usersService.findByCpf(loginUser.cpf);
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return user;
   }
 }

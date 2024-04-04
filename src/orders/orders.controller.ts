@@ -9,6 +9,7 @@ import {
   HttpException,
   HttpCode,
   Put,
+  Query,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -27,8 +28,15 @@ export class OrdersController {
   }
 
   @Get()
-  async findAll() {
-    return await this.ordersService.findAll();
+  async findAll(
+    @Query('name') name?: string,
+    @Query('cpf') cpf?: string,
+    @Query('status') status?: string,
+    @Query('page') page?: string,
+  ) {
+    const pageIndex = page ? parseInt(page, 10) : 1;
+
+    return await this.ordersService.findAll(name, cpf, status, pageIndex);
   }
 
   @Get(':id')
