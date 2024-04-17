@@ -10,8 +10,6 @@ COPY . .
 
 EXPOSE 3333
 
-RUN npm run migrate
-
 RUN npm run generate
 
 CMD npm run dev
