@@ -55,3 +55,13 @@ model OrderItem {
 
   @@map("order_items")
 }
+
+model Image {
+  id            String @id @default(uuid())
+  fileName      String @map("file_name")
+  contentLength Int    @map("content_length")
+  contentType   String @map("content_type")
+  url           String
+
+  @@map("images")
+}
